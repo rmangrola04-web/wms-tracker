@@ -1,0 +1,43 @@
+<!-- One-Click Download HTML Button Component -->
+<button 
+  onclick="downloadCurrentApp()" 
+  class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-xs font-bold rounded-xl shadow-lg transition cursor-pointer border border-blue-400/30"
+  style="padding: 10px 18px; background: #2563eb; color: #ffffff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+  <i class="fa-solid fa-file-arrow-down text-sm"></i>
+  <span>Download HTML File (पूरा ऐप डाउनलोड करें)</span>
+</button>
+
+<script>
+/**
+ * यह फ़ंक्शन वर्तमान पेज का पूरा HTML (doctype, head, body, tailwind, scripts)
+ * एक सिंगल standalone .html फ़ाइल में डाउनलोड करता है।
+ */
+function downloadCurrentApp() {
+  try {
+    // 1. वर्तमान पेज का सम्पूर्ण HTML तैयार करना
+    const fullPageHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    
+    // 2. UTF-8 Blob बनाना
+    const blob = new Blob([fullPageHTML], { type: "text/html;charset=utf-8" });
+    
+    // 3. अदृश्य लिंक बनाकर डाउनलोड ट्रिगर करना
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "warehouse_vehicle_tracker.html";
+    
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    // मेमोरी साफ़ करना
+    URL.revokeObjectURL(a.href);
+    
+    if (typeof showToast === 'function') {
+      showToast('HTML फ़ाइल (warehouse_vehicle_tracker.html) सफलतापूर्वक डाउनलोड हो गई!', 'success');
+    }
+  } catch (err) {
+    console.error('Download failed:', err);
+    alert('फ़ाइल डाउनलोड करने में त्रुटि: ' + err.message);
+  }
+}
+</script>
